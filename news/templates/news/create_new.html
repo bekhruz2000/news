@@ -1,0 +1,21 @@
+{% extends 'news/base.html' %}
+
+{% block title %}Добавление новости{% endblock %}
+
+
+{% block content %}
+<div class="col-md-10 m-2">
+    <form action="{% url 'createnew' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        
+        {{ form.as_p }}
+
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-block">Добаавить новость</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

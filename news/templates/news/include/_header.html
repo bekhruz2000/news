@@ -1,0 +1,55 @@
+{% load news_tags %}
+{% get_categories as categories %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow mb-5">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">Новости</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Категории
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><h6 class="dropdown-header">Выберите категорию</h6></li>
+                {% for category in categories %}
+                    {% if category.id == active_category.id %}
+                        <li><a class="dropdown-item disabled" href="{% url 'get_categories' category.id %}">{{ category.title }} {{ news_count }}</a></li>
+                    {% else %}
+                        <li><a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+          </li>
+          {% if request.user.is_superuser %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'createnew' %}">Добавить новость</a>
+            </li>
+          {% endif %}
+        </ul>
+        <ul class="navbar-nav">
+          {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'logout' %}">Выход</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-current="page" href="#">{{ user.username }}</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'register' %}">Регистрация</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'login' %}">Вход</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
